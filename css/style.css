@@ -1,0 +1,16 @@
+.card {
+	margin-bottom: 30px;
+}
+.card-phone .card-img-top{
+	display: inline-block;
+	width: auto;
+	height: 100px;
+}
+.icon{
+	margin-bottom: 15px;
+	height: 150px;
+}
+
+#job{
+	margin-bottom: 45px;
+}
