@@ -114,7 +114,6 @@ class List extends React.Component{
 	renderElements(){
 		
 		if(this.state.items.length > 0){
-			console.log(this.state.items.length)
 			return (
 				this.state.items.map(function(item){
 					return <Item key={item.name} image={item.image} name={item.name} detail={item.detail} />
@@ -167,3 +166,91 @@ function printList(){
 printList();
 
 
+// JOB
+// https://codepen.io/chriscoyier/pen/jqyWXo
+const jobValues = {
+	title: 'They need you!'
+};
+class JobView extends React.Component{
+	constructor(props){
+		super(props);
+	}
+	render(){
+		return(
+			<div className="col-12 col-sm-6 col-md-4">
+				<div className="card">
+					<div className="card-header">{this.props.company}</div>
+					<div className="card-body">
+						<h4 className="card-title">{this.props.title}</h4>
+					</div>
+					<ul className="list-group list-group-flush">
+						<li className="list-group-item"><i className="material-icons">settings_remote</i> Remote: <span className={(this.props.remote == "true") ? 'text-success font-weight-bold' : 'text-danger font-weight-bold'}>{this.props.remote}</span></li>
+						<li className="list-group-item"><i className="material-icons">timeline</i> Term: <span className="font-weight-bold">{this.props.term}</span></li>
+					</ul>
+					<div className="card-body">
+						<a href={this.props.link} className="card-link" target="_blank">More details</a>
+					</div>
+				</div>
+			</div>
+		)
+	}
+}
+class Job extends React.Component{
+	constructor(props){
+		super(props);
+		this.state = {
+			items: []
+		};
+	}
+	componentDidMount(){
+		let that = this;
+		fetch(that.props.source)
+			.then(function(response){
+				return response.json();
+			})
+			.then(function(data){
+				that.setState({
+					items: data.jobs
+				})
+				console.log(that.state.items);
+			})
+			
+			// .then(this.state => this.setState({
+			// 	jobs: result
+			// }))
+	}
+	componentWillUnmount(){
+		console.log('unmount');
+	}
+	render(){
+		return(
+			<div className="jumbotron jumbotron-fluid">
+				<div className="container">
+					<div className="mb-5">
+						<h1 className="mb-1">{jobValues.title}</h1>
+						<p>We will take information from this JSON file: <span className="font-weight-bold">{this.props.source}</span></p>
+					</div>
+					<div className="row">
+						{
+							this.state.items.map(function(item, i){
+								return <JobView
+												key={item.hashid}
+												title={item.title}
+												company={item.company_name}
+												link={item.url}
+												remote={item.remote}
+												term={item.term} />
+							})
+						}
+					</div>
+				</div>
+			</div>
+		)
+	}
+}
+//this.state.jobs.length
+// {this.state.items.map(item => <li key={item.company_name}>{item.company_name}</li>)}
+/*
+
+*/
+ReactDOM.render(<Job source="https://codepen.io/jobs.json" />, document.getElementById('job'));
